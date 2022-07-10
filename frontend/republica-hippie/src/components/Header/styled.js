@@ -5,7 +5,7 @@ export const Header = styled.header`
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    padding-top: 55px;
+    padding-top: 40px;
     background-color: #fff;
 `
 
@@ -14,22 +14,41 @@ export const LogoArea = styled.div`
     justify-content: space-around;
     gap: 50px;
     align-items: center;
+    @media screen and(max-width: 1470px) {
+        margin: 0 20px;
+    }
+    @media screen and (max-width: 768px) {
+        flex-wrap: wrap;
+        align-items: center;
+        margin-bottom: 20px;
+    }
 `
 
-export const SearchContainer = styled.div`
+export const LogoLink = styled(Link)`
+    @media screen and (max-width: 768px) {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+`
+
+export const SearchContainer = styled.form`
     display: flex;
     border: 1px solid #5AB9F0;
     border-radius: 20px;
     width: 60%;
     align-items: center;
     padding-right: 12px;
+    @media screen and(max-width: 768px) {
+
+    }
 `
 
 export const Search = styled.input`
     border: none;
     outline: none;
     border-radius: 20px;
-    height: 60px;
+    height: 45px;
     width: 100%;
     padding: 8px 12px;
     &::-webkit-search-cancel-button {
@@ -43,8 +62,53 @@ export const Search = styled.input`
     }
 `
 
+export const Menu = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 55px;
+    @media screen and (max-width: 768px) {
+        gap: 20px;
+    }
+`
+
+export const Icon = styled.img`
+    height: 55px;
+    width: 55px;
+    padding: 15px;
+    background-color: #FEDC96;
+    border-radius: 50%;
+    transition: .3s;
+    cursor: pointer;
+    &:hover {
+        background-color: #F8CE78;
+        transition: .3s;
+    }
+`
+
+export const IconLink = styled(Link)`
+    height: 55px;
+    width: 55px;
+    border-radius: 50%;
+    text-decoration: none;
+`
+
+export const CartBadge = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    bottom: 19px;
+    left: 30px;
+    background-color: #f17c7e;
+    padding: 3px;
+    height: 27px;
+    width: 27px;
+    border-radius: 50%;
+`
+
 export const NavArea = styled.div`
     display: flex;
+    flex-wrap: wrap;
     margin: 0 auto;
 `
 
@@ -55,11 +119,19 @@ export const Nav = styled.ul`
     justify-content: center;
     gap: 20%;
     list-style: none;
-    margin: 40px auto 65px auto;
+    margin: 20px auto 40px auto;
+    @media screen and (max-width: 1280px) {
+        flex-wrap: wrap;
+        gap: 50px;
+    }
+    @media screen and (max-width: 768px) {
+        padding-left: 0;
+    }
 `
 
 export const NavLink = styled(Link)`
     text-decoration: none;
+    
 `
 
 export const NavItem = styled.li`
@@ -77,29 +149,17 @@ export const ContainerExpositores = styled.div`
     align-items: center;
     padding-left: 20%;
     border-left: 3px solid #D8A691;
-`
-
-export const Menu = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 55px;
-`
-
-export const Icon = styled.img`
-    height: 66px;
-    width: 66px;
-    padding: 20px;
-    background-color: #FEDC96;
-    border-radius: 50%;
-    transition: .3s;
-    &:hover {
-        background-color: #F8CE78;
-        transition: .3s;
+    @media screen and (max-width: 1280px) {
+        padding-left: 0;
+        border-left: none;
+        width: 100%;
+        justify-content: center;
     }
 `
 
-export const IconLink = styled(Link)`
-    height: 66px;
-    width: 66px;
-    border-radius: 50%;
+export const SearchButton = styled.button`
+    background: none;
+    border: none;
+    outline: none;
 `
+

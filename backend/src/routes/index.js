@@ -1,59 +1,50 @@
-const ExhibitorsController = require('../domain/shops/controllers/Exhibitors.controller');
-const productsController = require("../domain/products/controllers/productsController");
-const categoriesController = require("../domain/categories/controllers/categoriesController");
-const imagesProductsController = require("../domain/imagesProducts/controllers/imagesProductsController");
-const createProductValidation = require("../domain/products/validations/createProductValidation");
-const editProductValidation = require("../domain/products/validations/editProductValidation");
+
+const ClientsController = require('../domain/clients/controllers/clientsController');
 const orderController = require("../domain/orders/controllers/orders.controller");
-const Product = require("../domain/products/models")
+const AuthController = require("../domain/auth/controllers/authController");
+const loginValidator = require("../domain/auth/validations/loginValidator"); 
+const ExhibitorsController = require('../domain/exhibitors/controllers/Exhibitors.controller');
+const { createExhibitorsValidation, getOneExhibitorsValidation, destroyExhibitorsValidation, updateExhibitorsValidation } = require('../domain/exhibitors/validations/exhibitors/');
+const orderValidation = require('../domain/orders/validations');
+
 const express = require("express");
+const ProductsController = require('../domain/products/controllers/productsController');
+const ProductsValidation = require('../domain/products/validations');
+
 const routes = express.Router();
+const clientsCreateValidator = require("../domain/clients/validations/clientsCreateValidator");
+const clientsUpdateValidator = require("../domain/clients/validations/clientsUpdateValidator");
+const Auth = require('../middlewares/auth');
 
-
-// routes.get("/login/shops", products.create);
-// routes.get("/login/clients", products.create);
+routes.post("/login/clients", loginValidator, AuthController.login);
 
 routes.get("/exhibitors", ExhibitorsController.getAllExhibitors);
-routes.get("/exhibitors/:idExhibitors", ExhibitorsController.getOneExhibitor);
-// routes.get("/shops/:idShops/products", shops.create); 
-routes.post("/exhibitors", ExhibitorsController.createExhibitor);
-routes.put("/exhibitors/:idExhibitors",  ExhibitorsController.updateExhibitor);
-routes.delete("/exhibitors/:idExhibitors/deletar",  ExhibitorsController.deleteExhibitor);
+routes.get("/exhibitors/:idExhibitors", getOneExhibitorsValidation, ExhibitorsController.getOneExhibitor);
+routes.get("/exhibitors/:idExhibitors/products", getOneExhibitorsValidation, ExhibitorsController.getProductsExhibitor);
+routes.post("/exhibitors", createExhibitorsValidation, ExhibitorsController.createExhibitor);
+routes.put("/exhibitors/:idExhibitors", updateExhibitorsValidation, ExhibitorsController.updateExhibitor);
+routes.delete("/exhibitors/:idExhibitors/deletar", destroyExhibitorsValidation, ExhibitorsController.deleteExhibitor);
 
+routes.get("/products", ProductsController.list);
+routes.get("/products/:code_product", ProductsValidation.findOne, ProductsController.findOne);
+routes.get("/products/categories/:categoryName", ProductsValidation.findByCategory, ProductsController.findByCategory);
+routes.get("/products/search/:term", ProductsValidation.findByTerm, ProductsController.findByTerm);
+routes.post("/products/:idExhibitors", ProductsValidation.createProduct, ProductsController.createProduct);
+routes.put("/products/:code_product", ProductsValidation.updateProduct, ProductsController.updateProduct);
+routes.delete("/products/:code_product/remove", ProductsValidation.deleteProduct, ProductsController.deleteProduct);
 
-routes.get("/products", productsController.list);
-routes.get("/products/find", productsController.find);
-routes.get("/products/categories", productsController.findByCategory);
-routes.post("/products", createProductValidation, productsController.create);
-routes.get("/products/:code_product",  editProductValidation, productsController.findOne);
-routes.put("/products/:code_product",  editProductValidation, productsController.edit);
-routes.put("/products/:code_product/remove", editProductValidation, productsController.remove);
+routes.get("/clients", Auth, ClientsController.listAllClients);
+routes.get("/clients/:id_client", Auth, ClientsController.listClientPerId);
+routes.post("/clients", clientsCreateValidator, ClientsController.createClient);
+routes.patch("/clients/:id_client", Auth, clientsUpdateValidator, ClientsController.updateClient);
+routes.delete("/clients/:id_client", Auth, ClientsController.deleteClient);
 
-
-//CATEGORIES
-routes.get("/categories", categoriesController.list);
-routes.post("/categories", categoriesController.create);
-// routes.get("/products/category/:nameCategory", products.create);
-
-
-//IMAGES PRODUCTS
-routes.get("/images", imagesProductsController.list);
-routes.post("/images", imagesProductsController.create);
-routes.put("/images/:id_img/remove", imagesProductsController.remove);
-
-
-// routes.get("/clients", clients.create);
-// routes.get("/clients/:id", clients.create);
-// routes.post("/clients", clients.create);
-// routes.put("/clients/:id", clients.create);
-// routes.delete("/clients/:id", clients.create);
-
-routes.get("/orders", orderController.allOrders);
-routes.get("/orders/:idClient", orderController.clientOrders);
-routes.get("/orders/:idClient/:idOrder", orderController.detailOrder);
-routes.post("/orders/:idClient", orderController.createOrder);
-routes.put("/orders/:idClient/:idOrder", orderController.updateOrder);
-routes.delete("/orders/:idClient/:idOrder", orderController.cancelOrder);
+routes.get("/orders", Auth, orderController.allOrders);
+routes.get("/orders/:idClient", Auth, orderValidation.clientOrders, orderController.clientOrders);
+routes.get("/orders/:idClient/:idOrder", Auth, orderValidation.detailOrder, orderController.detailOrder);
+routes.post("/orders/:idClient", Auth, orderValidation.createOrder, orderController.createOrder);
+routes.patch("/orders/:idClient/:idOrder", Auth, orderValidation.updateOrder, orderController.updateOrder);
+routes.delete("/orders/:idClient/:idOrder", Auth, orderValidation.cancelOrder, orderController.cancelOrder);
 
 
 module.exports = routes;

@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable('products', {
       code_product: {
         allowNull: false,
@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-       id_exhibitors_product: {
+      id_exhibitors_product: {
         type: Sequelize.INTEGER,
         references: {
           model: {
@@ -26,13 +26,22 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
+      characteristics: {
+        type: Sequelize.STRING
+      },
+      materials: {
+        type: Sequelize.STRING
+      },
+      observations: {
+        type: Sequelize.STRING
+      },
       stock_product: {
         allowNull: false,
         type: Sequelize.INTEGER
       },
       price: {
         allowNull: false,
-        type: Sequelize.DECIMAL(6,2)
+        type: Sequelize.DECIMAL(6, 2)
       },
       createdAt: {
         allowNull: false,
